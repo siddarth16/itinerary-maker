@@ -33,7 +33,7 @@ The system consists of:
 Collect the following in a multi‑step form:
 - Destinations: free‑text list (accept cities, countries, or continents). Resolve to a concrete city list.
 - Origin(s): free‑text (airport/city). Resolve to IATA where applicable.
-- Months of travel: start–end month (e.g., “Sep–Oct 2025”).
+- Months of travel: start–end month (e.g., "Sep–Oct 2025").
 - Duration: min/max days (e.g., 12–18).
 - Budget (per person or total): numeric range + currency.
 - Party size: integer.
@@ -90,7 +90,7 @@ Collect the following in a multi‑step form:
 | Nights | int | computed |
 | Stay_Name | string | display name |
 | Stay_Type | enum | Hostel \| Hotel \| Apartment |
-| Room_Type | string | “8‑bed dorm”, etc. |
+| Room_Type | string | "8‑bed dorm", etc. |
 | Stay_Cancellation | enum | Free \| Partial \| Nonref |
 | Stay_Link | url | deep link |
 | Stay_Currency | string | ISO code |
@@ -112,8 +112,8 @@ Collect the following in a multi‑step form:
 | Mode | enum | Flight \| Bus \| Train \| Ferry |
 | Carrier | string | |
 | Service_No | string | flight/bus/train id |
-| Depart_Local | datetime | “YYYY‑MM‑DD HH:mm” |
-| Arrive_Local | datetime | “YYYY‑MM‑DD HH:mm” |
+| Depart_Local | datetime | "YYYY‑MM‑DD HH:mm" |
+| Arrive_Local | datetime | "YYYY‑MM‑DD HH:mm" |
 | Duration_Min | int | minutes |
 | Bags_Included | int | count |
 | Fare_Base | number | optional |
@@ -211,7 +211,7 @@ Also emit a **JSON export** mirroring the same fields for API consumers.
 
 ## 7) Provider Modules & Normalization
 
-Implement pluggable provider modules with a shared interface for **flights**, **stays**, and **ground**. Each module may fetch public results pages using Playwright or return **deep‑link templates** when direct acquisition isn’t available.
+Implement pluggable provider modules with a shared interface for **flights**, **stays**, and **ground**. Each module may fetch public results pages using Playwright or return **deep‑link templates** when direct acquisition isn't available.
 
 Normalize all outputs to the **FlightOffer / StayOffer / GroundOffer** contracts below.
 
@@ -339,7 +339,7 @@ Normalize all outputs to the **FlightOffer / StayOffer / GroundOffer** contracts
 - Compute a deterministic hash of normalized inputs → `Trip_ID`.  
 - Cache intermediate provider results for common routes/date windows.  
 - Log each provider call with: params snapshot, latency, `retrieved_at_utc`, and offer counts.  
-- Repeated runs with same inputs reuse cached offers unless a “force refresh” flag is set.
+- Repeated runs with same inputs reuse cached offers unless a "force refresh" flag is set.
 
 ---
 
@@ -396,9 +396,9 @@ Use these to generate a fully populated itinerary without external calls.
 ## 18) UI Notes
 
 - **/plan**: multi‑step wizard with progress indicator.  
-- **/itinerary/[tripId]** (pre‑paywall): timeline of days (City + Date), grand total, “Unlock full plan” button.  
+- **/itinerary/[tripId]** (pre‑paywall): timeline of days (City + Date), grand total, "Unlock full plan" button.  
 - **/itinerary/[tripId]** (post‑paywall): tabs → Overview, Transport, Stays, Daily Budget, Downloads.  
-- Cards show carrier, time range, duration, fare, refundability badges, and “Open link”.  
+- Cards show carrier, time range, duration, fare, refundability badges, and "Open link".  
 - Sticky cost summary panel with totals and per‑person figure.
 
 ---

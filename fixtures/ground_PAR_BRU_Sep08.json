@@ -1,0 +1,42 @@
+[
+  {
+    "type": "ground",
+    "mode": "Bus",
+    "from_city": "Paris",
+    "from_code": "Bercy",
+    "to_city": "Brussels",
+    "to_code": "North",
+    "depart_local": "2025-09-08 08:30",
+    "arrive_local": "2025-09-08 12:05",
+    "duration_min": 215,
+    "carrier": "FlixBus",
+    "service_no": "FB1234",
+    "bags_included": 1,
+    "total_price": 19.99,
+    "currency": "EUR",
+    "refundable": "Partial",
+    "booking_link": "https://flixbus.com/paris-brussels-2025-09-08",
+    "source": "FlixBus",
+    "retrieved_at_utc": "2025-08-21 18:55:12"
+  },
+  {
+    "type": "ground",
+    "mode": "Train",
+    "from_city": "Paris",
+    "from_code": "Gare du Nord",
+    "to_city": "Brussels",
+    "to_code": "Midi",
+    "depart_local": "2025-09-08 10:25",
+    "arrive_local": "2025-09-08 11:47",
+    "duration_min": 82,
+    "carrier": "Thalys",
+    "service_no": "THA9341",
+    "bags_included": 2,
+    "total_price": 45.00,
+    "currency": "EUR",
+    "refundable": "Refundable",
+    "booking_link": "https://thalys.com/paris-brussels-2025-09-08",
+    "source": "Thalys",
+    "retrieved_at_utc": "2025-08-21 18:55:12"
+  }
+]

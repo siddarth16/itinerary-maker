@@ -1,0 +1,53 @@
+[
+  {
+    "type": "stay",
+    "city": "Paris",
+    "check_in": "2025-09-05",
+    "check_out": "2025-09-08",
+    "nights": 3,
+    "name": "Generator Paris Hostel",
+    "stay_type": "Hostel",
+    "room_type": "8-bed dorm",
+    "cancellation": "Free",
+    "price_per_night": 28.50,
+    "taxes": 5.20,
+    "currency": "EUR",
+    "link": "https://booking.com/paris-generator-hostel",
+    "source": "Booking.com",
+    "retrieved_at_utc": "2025-08-21 18:55:12"
+  },
+  {
+    "type": "stay",
+    "city": "Paris",
+    "check_in": "2025-09-05",
+    "check_out": "2025-09-08", 
+    "nights": 3,
+    "name": "Hotel des Grands Boulevards",
+    "stay_type": "Hotel",
+    "room_type": "Standard Double Room",
+    "cancellation": "Partial",
+    "price_per_night": 89.00,
+    "taxes": 12.50,
+    "currency": "EUR",
+    "link": "https://booking.com/paris-hotel-grands-boulevards",
+    "source": "Booking.com",
+    "retrieved_at_utc": "2025-08-21 18:55:12"
+  },
+  {
+    "type": "stay",
+    "city": "Paris",
+    "check_in": "2025-09-05",
+    "check_out": "2025-09-08",
+    "nights": 3,
+    "name": "Marais Apartment",
+    "stay_type": "Apartment",
+    "room_type": "1BR Apartment",
+    "cancellation": "Nonref",
+    "price_per_night": 75.00,
+    "taxes": 8.00,
+    "currency": "EUR",
+    "link": "https://airbnb.com/paris-marais-apartment",
+    "source": "Airbnb",
+    "retrieved_at_utc": "2025-08-21 18:55:12"
+  }
+]

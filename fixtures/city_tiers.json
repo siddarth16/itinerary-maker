@@ -1,0 +1,92 @@
+[
+  {
+    "city": "Paris",
+    "tier": 1,
+    "food": 45,
+    "local_transport": 15,
+    "activities": 35,
+    "misc": 20,
+    "buffer": 10
+  },
+  {
+    "city": "Brussels",
+    "tier": 2,
+    "food": 35,
+    "local_transport": 12,
+    "activities": 25,
+    "misc": 15,
+    "buffer": 8
+  },
+  {
+    "city": "Amsterdam",
+    "tier": 1,
+    "food": 40,
+    "local_transport": 18,
+    "activities": 30,
+    "misc": 18,
+    "buffer": 9
+  },
+  {
+    "city": "Berlin",
+    "tier": 2,
+    "food": 30,
+    "local_transport": 12,
+    "activities": 20,
+    "misc": 12,
+    "buffer": 7
+  },
+  {
+    "city": "Prague",
+    "tier": 3,
+    "food": 25,
+    "local_transport": 8,
+    "activities": 15,
+    "misc": 10,
+    "buffer": 5
+  },
+  {
+    "city": "Rome",
+    "tier": 2,
+    "food": 35,
+    "local_transport": 10,
+    "activities": 25,
+    "misc": 15,
+    "buffer": 8
+  },
+  {
+    "city": "Barcelona",
+    "tier": 2,
+    "food": 32,
+    "local_transport": 10,
+    "activities": 22,
+    "misc": 13,
+    "buffer": 7
+  },
+  {
+    "city": "London",
+    "tier": 1,
+    "food": 50,
+    "local_transport": 20,
+    "activities": 40,
+    "misc": 25,
+    "buffer": 12
+  },
+  {
+    "city": "Vienna",
+    "tier": 2,
+    "food": 30,
+    "local_transport": 12,
+    "activities": 22,
+    "misc": 14,
+    "buffer": 7
+  },
+  {
+    "city": "Budapest",
+    "tier": 3,
+    "food": 22,
+    "local_transport": 6,
+    "activities": 15,
+    "misc": 10,
+    "buffer": 5
+  }
+]
