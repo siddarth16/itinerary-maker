@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import type { ProgressResponse } from '@/types';
 
 interface Props {
-  params: { tripId: string };
+  params: Promise<{ tripId: string }>;
 }
 
 export default function ProgressPage({ params }: Props) {
@@ -17,7 +17,8 @@ export default function ProgressPage({ params }: Props) {
   useEffect(() => {
     const pollProgress = async () => {
       try {
-        const response = await fetch(`/api/progress/${params.tripId}`);
+        const resolvedParams = await params;
+        const response = await fetch(`/api/progress/${resolvedParams.tripId}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -30,7 +31,7 @@ export default function ProgressPage({ params }: Props) {
         if (data.status === 'completed') {
           // Redirect to itinerary page after a short delay
           setTimeout(() => {
-            router.push(`/itinerary/${params.tripId}`);
+            router.push(`/itinerary/${resolvedParams.tripId}`);
           }, 2000);
         } else if (data.status === 'error') {
           setError('An error occurred while planning your trip');
@@ -56,7 +57,7 @@ export default function ProgressPage({ params }: Props) {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [params.tripId, router, progress?.status]);
+  }, [params, router, progress?.status]);
 
   if (loading && !progress) {
     return (

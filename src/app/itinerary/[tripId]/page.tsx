@@ -6,7 +6,7 @@ import type { ItineraryResponse, FullItineraryResponse } from '@/types';
 import { formatCurrency, formatDuration, formatDateRange } from '@/lib/utils';
 
 interface Props {
-  params: { tripId: string };
+  params: Promise<{ tripId: string }>;
 }
 
 export default function ItineraryPage({ params }: Props) {
@@ -19,7 +19,8 @@ export default function ItineraryPage({ params }: Props) {
   useEffect(() => {
     const fetchItinerary = async () => {
       try {
-        const response = await fetch(`/api/itinerary/${params.tripId}`);
+        const resolvedParams = await params;
+        const response = await fetch(`/api/itinerary/${resolvedParams.tripId}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -37,11 +38,12 @@ export default function ItineraryPage({ params }: Props) {
     };
 
     fetchItinerary();
-  }, [params.tripId]);
+  }, [params]);
 
   const handleUnlock = async () => {
     try {
-      const response = await fetch(`/api/checkout/${params.tripId}`, {
+      const resolvedParams = await params;
+      const response = await fetch(`/api/checkout/${resolvedParams.tripId}`, {
         method: 'POST'
       });
       

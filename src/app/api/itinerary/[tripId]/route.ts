@@ -4,10 +4,10 @@ import type { ItineraryResponse, FullItineraryResponse, PaywallView, CityPlan, T
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { tripId: string } }
+  { params }: { params: Promise<{ tripId: string }> }
 ) {
   try {
-    const { tripId } = params;
+    const { tripId } = await params;
 
     if (!tripId) {
       return NextResponse.json(
