@@ -1,8 +1,20 @@
-'use client';
+"use client"
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import type { FormData, PlanRequest } from '@/types';
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { AppHeader } from "@/components/app-header"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Slider } from "@/components/ui/slider"
+import { Progress } from "@/components/ui/progress"
+import { Badge } from "@/components/ui/badge"
+import { ArrowLeft, ArrowRight, X, Plus, MapPin, Calendar, DollarSign, Settings } from "lucide-react"
+import type { FormData, PlanRequest } from "@/types"
 
 const initialFormData: FormData = {
   destinations: [{ id: '1', value: '' }],
@@ -153,328 +165,384 @@ export default function PlanPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-2xl mx-auto px-4">
-        {/* Progress Bar */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            {steps.map((step, index) => (
-              <div
-                key={index}
-                className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium ${
-                  index <= currentStep
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-500'
-                }`}
-              >
-                {index + 1}
-              </div>
-            ))}
+    <div className="min-h-screen bg-background">
+      <AppHeader />
+      
+      <div className="container mx-auto max-w-4xl px-4 py-12">
+        {/* Progress Header */}
+        <div className="text-center mb-8">
+          <h1 className="font-heading font-bold text-3xl md:text-4xl mb-4">
+            Plan Your Perfect Trip
+          </h1>
+          <p className="text-lg text-muted-foreground mb-8">
+            Tell us about your travel dreams and we'll create the perfect itinerary
+          </p>
+          
+          {/* Step Progress */}
+          <div className="flex items-center justify-center space-x-4 mb-6">
+            {steps.map((step, index) => {
+              const Icon = [MapPin, Calendar, DollarSign, Settings][index]
+              const isActive = index <= currentStep
+              const isCurrent = index === currentStep
+              
+              return (
+                <div key={index} className="flex items-center">
+                  <div className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all ${
+                    isActive 
+                      ? 'bg-primary border-primary text-primary-foreground' 
+                      : 'bg-background border-border text-muted-foreground'
+                  } ${isCurrent ? 'ring-2 ring-primary/20' : ''}`}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  {index < steps.length - 1 && (
+                    <div className={`w-16 h-0.5 mx-2 ${isActive ? 'bg-primary' : 'bg-border'}`} />
+                  )}
+                </div>
+              )
+            })}
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
-            />
+          
+          <Progress value={((currentStep + 1) / steps.length) * 100} className="max-w-md mx-auto" />
+          
+          <div className="mt-4">
+            <Badge variant="secondary" className="text-sm">
+              Step {currentStep + 1} of {steps.length}
+            </Badge>
           </div>
         </div>
 
         {/* Step Content */}
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold mb-2">{steps[currentStep].title}</h2>
-          <p className="text-gray-600 mb-8">{steps[currentStep].description}</p>
+        <Card className="max-w-2xl mx-auto">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">{steps[currentStep].title}</CardTitle>
+            <CardDescription className="text-base">{steps[currentStep].description}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
 
-          {/* Step 0: Destinations */}
-          {currentStep === 0 && (
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Where are you starting from?
-                </label>
-                <input
-                  type="text"
-                  value={formData.origin}
-                  onChange={(e) => setFormData(prev => ({ ...prev, origin: e.target.value }))}
-                  placeholder="e.g., Delhi, New York (JFK), London"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+            {/* Step 0: Destinations */}
+            {currentStep === 0 && (
+              <div className="space-y-6">
+                <div>
+                  <Label htmlFor="origin" className="text-base font-medium mb-3 block">
+                    Where are you starting from?
+                  </Label>
+                  <Input
+                    id="origin"
+                    value={formData.origin}
+                    onChange={(e) => setFormData(prev => ({ ...prev, origin: e.target.value }))}
+                    placeholder="e.g., Delhi, New York (JFK), London"
+                    className="text-base h-12"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Destinations
-                </label>
-                {formData.destinations.map((destination, index) => (
-                  <div key={destination.id} className="flex gap-2 mb-2">
-                    <input
-                      type="text"
-                      value={destination.value}
-                      onChange={(e) => updateDestination(destination.id, e.target.value)}
-                      placeholder={`Destination ${index + 1} (e.g., Paris, Western Europe, Japan)`}
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    {formData.destinations.length > 1 && (
-                      <button
-                        onClick={() => removeDestination(destination.id)}
-                        className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-md"
-                      >
-                        ✕
-                      </button>
-                    )}
+                <div>
+                  <Label className="text-base font-medium mb-3 block">
+                    Destinations
+                  </Label>
+                  <div className="space-y-3">
+                    {formData.destinations.map((destination, index) => (
+                      <div key={destination.id} className="flex gap-3">
+                        <Input
+                          value={destination.value}
+                          onChange={(e) => updateDestination(destination.id, e.target.value)}
+                          placeholder={`Destination ${index + 1} (e.g., Paris, Western Europe, Japan)`}
+                          className="flex-1 text-base h-12"
+                        />
+                        {formData.destinations.length > 1 && (
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => removeDestination(destination.id)}
+                            className="h-12 w-12 text-destructive hover:text-destructive"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    <Button
+                      variant="outline"
+                      onClick={addDestination}
+                      className="w-full h-12 text-base"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add another destination
+                    </Button>
                   </div>
-                ))}
-                <button
-                  onClick={addDestination}
-                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-                >
-                  + Add another destination
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Step 1: Travel Window */}
-          {currentStep === 1 && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Travel window start
-                  </label>
-                  <input
-                    type="date"
-                    value={formData.travelWindow.start}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      travelWindow: { ...prev.travelWindow, start: e.target.value }
-                    }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Travel window end
-                  </label>
-                  <input
-                    type="date"
-                    value={formData.travelWindow.end}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      travelWindow: { ...prev.travelWindow, end: e.target.value }
-                    }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
                 </div>
               </div>
+            )}
 
-              <div className="grid grid-cols-2 gap-4">
+            {/* Step 1: Travel Window */}
+            {currentStep === 1 && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="startDate" className="text-base font-medium mb-3 block">
+                      Travel window start
+                    </Label>
+                    <Input
+                      id="startDate"
+                      type="date"
+                      value={formData.travelWindow.start}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        travelWindow: { ...prev.travelWindow, start: e.target.value }
+                      }))}
+                      className="text-base h-12"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="endDate" className="text-base font-medium mb-3 block">
+                      Travel window end
+                    </Label>
+                    <Input
+                      id="endDate"
+                      type="date"
+                      value={formData.travelWindow.end}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        travelWindow: { ...prev.travelWindow, end: e.target.value }
+                      }))}
+                      className="text-base h-12"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="minDays" className="text-base font-medium mb-3 block">
+                      Minimum days
+                    </Label>
+                    <Input
+                      id="minDays"
+                      type="number"
+                      value={formData.duration.min}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        duration: { ...prev.duration, min: parseInt(e.target.value) || 1 }
+                      }))}
+                      min="1"
+                      className="text-base h-12"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="maxDays" className="text-base font-medium mb-3 block">
+                      Maximum days
+                    </Label>
+                    <Input
+                      id="maxDays"
+                      type="number"
+                      value={formData.duration.max}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        duration: { ...prev.duration, max: parseInt(e.target.value) || 1 }
+                      }))}
+                      min="1"
+                      className="text-base h-12"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 2: Budget & Party */}
+            {currentStep === 2 && (
+              <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Minimum days
-                  </label>
-                  <input
+                  <Label htmlFor="partySize" className="text-base font-medium mb-3 block">
+                    Party size
+                  </Label>
+                  <Input
+                    id="partySize"
                     type="number"
-                    value={formData.duration.min}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      duration: { ...prev.duration, min: parseInt(e.target.value) || 1 }
-                    }))}
+                    value={formData.partySize}
+                    onChange={(e) => setFormData(prev => ({ ...prev, partySize: parseInt(e.target.value) || 1 }))}
                     min="1"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="text-base h-12"
                   />
                 </div>
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Maximum days
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.duration.max}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      duration: { ...prev.duration, max: parseInt(e.target.value) || 1 }
-                    }))}
-                    min="1"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                  <Label className="text-base font-medium mb-3 block">
+                    Budget (optional)
+                  </Label>
+                  <div className="grid grid-cols-3 gap-3">
+                    <Input
+                      type="number"
+                      placeholder="Min"
+                      value={formData.budget.min || ''}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        budget: { ...prev.budget, min: parseInt(e.target.value) || undefined }
+                      }))}
+                      className="text-base h-12"
+                    />
+                    <Input
+                      type="number"
+                      placeholder="Max"
+                      value={formData.budget.max || ''}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        budget: { ...prev.budget, max: parseInt(e.target.value) || undefined }
+                      }))}
+                      className="text-base h-12"
+                    />
+                    <Select
+                      value={formData.budget.currency}
+                      onValueChange={(value) => setFormData(prev => ({
+                        ...prev,
+                        budget: { ...prev.budget, currency: value }
+                      }))}
+                    >
+                      <SelectTrigger className="h-12 text-base">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="USD">USD</SelectItem>
+                        <SelectItem value="EUR">EUR</SelectItem>
+                        <SelectItem value="INR">INR</SelectItem>
+                        <SelectItem value="GBP">GBP</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center space-x-2 mt-4">
+                    <Checkbox
+                      id="perPerson"
+                      checked={formData.budget.perPerson}
+                      onCheckedChange={(checked) => setFormData(prev => ({
+                        ...prev,
+                        budget: { ...prev.budget, perPerson: !!checked }
+                      }))}
+                    />
+                    <Label htmlFor="perPerson" className="text-base">Per person</Label>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Step 2: Budget & Party */}
-          {currentStep === 2 && (
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Party size
-                </label>
-                <input
-                  type="number"
-                  value={formData.partySize}
-                  onChange={(e) => setFormData(prev => ({ ...prev, partySize: parseInt(e.target.value) || 1 }))}
-                  min="1"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Budget (optional)
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  <input
-                    type="number"
-                    placeholder="Min"
-                    value={formData.budget.min || ''}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      budget: { ...prev.budget, min: parseInt(e.target.value) || undefined }
-                    }))}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max"
-                    value={formData.budget.max || ''}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      budget: { ...prev.budget, max: parseInt(e.target.value) || undefined }
-                    }))}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <select
-                    value={formData.budget.currency}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      budget: { ...prev.budget, currency: e.target.value }
-                    }))}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="INR">INR</option>
-                    <option value="GBP">GBP</option>
-                  </select>
+            {/* Step 3: Preferences */}
+            {currentStep === 3 && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="baggage" className="text-base font-medium mb-3 block">
+                      Baggage pieces per person
+                    </Label>
+                    <Input
+                      id="baggage"
+                      type="number"
+                      value={formData.baggage}
+                      onChange={(e) => setFormData(prev => ({ ...prev, baggage: parseInt(e.target.value) || 1 }))}
+                      min="0"
+                      className="text-base h-12"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-base font-medium mb-3 block">
+                      Cabin class
+                    </Label>
+                    <Select
+                      value={formData.cabin}
+                      onValueChange={(value) => setFormData(prev => ({ ...prev, cabin: value as any }))}
+                    >
+                      <SelectTrigger className="h-12 text-base">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Economy">Economy</SelectItem>
+                        <SelectItem value="PremiumEconomy">Premium Economy</SelectItem>
+                        <SelectItem value="Business">Business</SelectItem>
+                        <SelectItem value="First">First</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
-                <label className="flex items-center mt-2">
-                  <input
-                    type="checkbox"
-                    checked={formData.budget.perPerson}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      budget: { ...prev.budget, perPerson: e.target.checked }
-                    }))}
-                    className="mr-2"
-                  />
-                  Per person
-                </label>
-              </div>
-            </div>
-          )}
 
-          {/* Step 3: Preferences */}
-          {currentStep === 3 && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="nightBus"
+                      checked={formData.nightBusAllowed}
+                      onCheckedChange={(checked) => setFormData(prev => ({ ...prev, nightBusAllowed: !!checked }))}
+                    />
+                    <Label htmlFor="nightBus" className="text-base">Allow night buses</Label>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="refundable"
+                      checked={formData.refundableOnly}
+                      onCheckedChange={(checked) => setFormData(prev => ({ ...prev, refundableOnly: !!checked }))}
+                    />
+                    <Label htmlFor="refundable" className="text-base">Refundable only</Label>
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Baggage pieces per person
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.baggage}
-                    onChange={(e) => setFormData(prev => ({ ...prev, baggage: parseInt(e.target.value) || 1 }))}
-                    min="0"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  <Label className="text-base font-medium mb-3 block">
+                    Maximum city hops: {formData.maxHops}
+                  </Label>
+                  <Slider
+                    value={[formData.maxHops]}
+                    onValueChange={(value) => setFormData(prev => ({ ...prev, maxHops: value[0] }))}
+                    min={2}
+                    max={8}
+                    step={1}
+                    className="w-full"
                   />
+                  <div className="flex justify-between text-sm text-muted-foreground mt-1">
+                    <span>2</span>
+                    <span>8</span>
+                  </div>
                 </div>
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Cabin class
-                  </label>
-                  <select
-                    value={formData.cabin}
-                    onChange={(e) => setFormData(prev => ({ ...prev, cabin: e.target.value as any }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="Economy">Economy</option>
-                    <option value="PremiumEconomy">Premium Economy</option>
-                    <option value="Business">Business</option>
-                    <option value="First">First</option>
-                  </select>
+                  <Label htmlFor="notes" className="text-base font-medium mb-3 block">
+                    Notes (optional)
+                  </Label>
+                  <Textarea
+                    id="notes"
+                    value={formData.notes}
+                    onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+                    placeholder="Any specific requirements or preferences..."
+                    rows={4}
+                    className="text-base"
+                  />
                 </div>
               </div>
+            )}
 
-              <div className="grid grid-cols-2 gap-4">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.nightBusAllowed}
-                    onChange={(e) => setFormData(prev => ({ ...prev, nightBusAllowed: e.target.checked }))}
-                    className="mr-2"
-                  />
-                  Allow night buses
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.refundableOnly}
-                    onChange={(e) => setFormData(prev => ({ ...prev, refundableOnly: e.target.checked }))}
-                    className="mr-2"
-                  />
-                  Refundable only
-                </label>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Maximum city hops: {formData.maxHops}
-                </label>
-                <input
-                  type="range"
-                  min="2"
-                  max="8"
-                  value={formData.maxHops}
-                  onChange={(e) => setFormData(prev => ({ ...prev, maxHops: parseInt(e.target.value) }))}
-                  className="w-full"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Notes (optional)
-                </label>
-                <textarea
-                  value={formData.notes}
-                  onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                  placeholder="Any specific requirements or preferences..."
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+            {/* Navigation */}
+            <div className="flex justify-between pt-6 border-t">
+              <Button
+                variant="outline"
+                onClick={prevStep}
+                disabled={currentStep === 0}
+                className="px-8 h-12 text-base"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
+              </Button>
+              <Button
+                onClick={nextStep}
+                disabled={!canProceedToNextStep() || loading}
+                className="px-8 h-12 text-base"
+              >
+                {loading ? (
+                  'Creating...'
+                ) : currentStep === steps.length - 1 ? (
+                  'Create Plan'
+                ) : (
+                  <>
+                    Next
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </>
+                )}
+              </Button>
             </div>
-          )}
-
-          {/* Navigation */}
-          <div className="flex justify-between mt-8">
-            <button
-              onClick={prevStep}
-              disabled={currentStep === 0}
-              className="px-6 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Back
-            </button>
-            <button
-              onClick={nextStep}
-              disabled={!canProceedToNextStep() || loading}
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Creating...' : currentStep === steps.length - 1 ? 'Create Plan' : 'Next'}
-            </button>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
-  );
+  )
 }
