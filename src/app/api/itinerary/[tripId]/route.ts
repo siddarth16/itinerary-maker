@@ -56,7 +56,7 @@ export async function GET(
     const paywallView: PaywallView[] = [];
     let cumulativeTotal = 0;
 
-    trip.dailyBudgets.forEach(budget => {
+    trip.dailyBudgets.forEach((budget: any) => {
       const dailyTotal = budget.dailyTotal;
       cumulativeTotal += dailyTotal;
 
