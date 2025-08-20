@@ -10,6 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Alternative for production - uncomment for PostgreSQL
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+//   directUrl = env("DIRECT_URL")
+// }
+
 model Trip {
   id                    String   @id @default(cuid())
   tripId                String   @unique // Trip_ID from spec
